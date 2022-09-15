@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "244631048213",
+    "firebase_url": "https://saurya-demo-1c2d3-default-rtdb.firebaseio.com",
+    "project_id": "saurya-demo-1c2d3",
+    "storage_bucket": "saurya-demo-1c2d3.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:244631048213:android:8f1e6ba40c06a549233e1c",
+        "android_client_info": {
+          "package_name": "com.example.databasedemo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "244631048213-u88bt4k1949dv3bvemoeu3gttri3n9m4.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.databasedemo",
+            "certificate_hash": "0bb28bbd56ae68373f766c53d025ba3346f093f1"
+          }
+        },
+        {
+          "client_id": "244631048213-c41ppe4ggi91bp7gekd1r9bod7i1t3bi.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD0WtABvF5kV3lgsRrlNVpGgXvlCyYIo7U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "244631048213-c41ppe4ggi91bp7gekd1r9bod7i1t3bi.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
