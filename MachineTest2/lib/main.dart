@@ -1,12 +1,15 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:machinetest2/displayList.dart';
+import 'package:machinetest2/profilePicPage.dart';
 import 'package:machinetest2/sqflitedb.dart';
 import 'package:machinetest2/studentInfoPage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 Future<bool> getValue() async{
   SharedPreferences preferences = await SharedPreferences.getInstance();
-  return preferences.getBool('log')??false;
+  return preferences.getBool('register')??false;
 }
 
 void main() {
@@ -15,12 +18,13 @@ void main() {
     runApp(
         MaterialApp(
           debugShowCheckedModeBanner: false,
-          initialRoute: value ?'studentInfo':'/',
-          // initialRoute: '/',
+          // initialRoute: value ?'/':'studentInfo',
+          initialRoute: 'studentInfo',
           routes: {
             '/': (context) => const LoginPage(),
             'studentInfo': (context) => const StudentInfo(),
             'DisplayList': (context) => DisplayListClass(SqfLiteDB.data),
+            'profilePicSelector': (context) => const profilePicSelector(),
           },
         )
     );
@@ -36,6 +40,19 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+
+  SqfLiteDB myDbObj=SqfLiteDB();
+  @override
+  void initState() {
+    super.initState();
+      myDbObj.createDb();
+    Timer(Duration(seconds: 2), () {
+      myDbObj.selectData();
+      setState(() {});
+    });
+
+  }
+
   bool password = false;
   final formKey = GlobalKey<FormState>();
   final emailController = TextEditingController();
@@ -70,7 +87,7 @@ class _LoginPageState extends State<LoginPage> {
 
          Container(
            margin: EdgeInsets.only(top: 293.0),
-           height: 445,
+           height: 500,
            width: double.infinity,
            decoration: BoxDecoration(
              color: Color(0xFFD1D1D1),
@@ -164,12 +181,24 @@ class _LoginPageState extends State<LoginPage> {
                              ),
                              obscureText: password,
                            ),
-                           ButtonBar(
-                             children: [
-                               Text('Forget Password',style: TextStyle(
-                                   color: Color(0xFF006A75)
-                               ),)
-                             ],
+                           GestureDetector(
+                             onTap: (){
+                               Navigator.pushNamed(context, 'studentInfo');
+                             },
+                             child: ButtonBar(
+                               children: [
+                                 Row(
+                                   children: [
+                                     Text('Dont have an Account'),
+                                     Text('Register',style: TextStyle(
+                                       fontWeight: FontWeight.bold,
+                                         color: Color(0xFF006A75)
+                                     ),)
+                                   ],
+                                 ),
+
+                               ],
+                             ),
                            ),
                            SizedBox(height: 40.0,),
 
@@ -181,12 +210,30 @@ class _LoginPageState extends State<LoginPage> {
                              ),
                              child:MaterialButton(
                                onPressed: () async {
+                                 formKey.currentState!.validate();
+                                   bool match = false;
+                                   SqfLiteDB.data.forEach((element) async {
+                                     if(element['studentEmail'] == emailController.text && element['password'] == passwordController.text)await{
+                                       match = true,
+                                       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                         duration: Duration(seconds: 2),
+                                           content: Text(
+                                         'Login Succefully!!'
+                                       ))),
 
-                                 if(formKey.currentState!.validate()){
-                                   SharedPreferences prefer = await SharedPreferences.getInstance();
-                                   prefer.setBool('log', true);
-                                   Navigator.pushReplacementNamed(context, 'studentInfo');
-                                 }
+                                       Timer(Duration(seconds: 3), () {
+                                         Navigator.pushReplacementNamed(context, 'DisplayList');
+                                       }),
+                                     };
+                                   });
+                                 SharedPreferences prefer = await SharedPreferences.getInstance();
+                                 prefer.setBool('log', true);
+                                   if(!match)
+                                     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                         content: Text('Invalid Credentials!!')
+                                     ));
+
+
                                },
                                color: Color(0xFF006A75),
                                child: Text('Login',style: TextStyle(
