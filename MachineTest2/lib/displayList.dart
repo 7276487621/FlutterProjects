@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:machinetest2/sqflitedb.dart';
-
+import 'dart:typed_data';
 class DisplayListClass extends StatefulWidget {
 
   List<Map> data;
@@ -13,13 +13,16 @@ class DisplayListClass extends StatefulWidget {
 
 class _DisplayListState extends State<DisplayListClass> {
 
+  String DecoImage='';
+  Uint8List? _bytesImage;
+
+
   SqfLiteDB myDbObj=SqfLiteDB();
-  @override
-  void initState() {
-    super.initState();
-    myDbObj.selectData();
-    setState(() {});
-  }
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   setState(() {});
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +31,7 @@ class _DisplayListState extends State<DisplayListClass> {
         backgroundColor: Colors.white,
         leading: Card(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(30.0)
+            borderRadius: BorderRadius.circular(30.0),
           ),
           color: Colors.grey.shade300,
           child:  IconButton(
@@ -50,11 +53,64 @@ class _DisplayListState extends State<DisplayListClass> {
             child: ListView.separated(
           itemCount: widget.data.length,
               itemBuilder: (context,index)=>ListTile(
-                leading: Image(image: AssetImage('images/ListUser.png'),height: 35),
-                title: Text(widget.data[index]['studentName']),
-                trailing: Text(widget.data[index]['branch'],style: TextStyle(
-                  color: Color(0xFF006A75),
+                leading: Image(image: AssetImage('images/ListUser.png',),),
+
+                title: Row(
+                  children: [
+                    Text('Name: ',style: TextStyle(
+                      fontSize: 20.0,
+                    ),),
+                    Text(widget.data[index]['studentName'],style: TextStyle(
+                      color: Color(0xFF006A75),
+                      fontSize: 20.0,
+                    ),),
+                  ],
                 ),
+                subtitle: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+
+                  children: [
+                    Row(
+                      children: [
+                        Text('Mob: ',style: TextStyle(
+                          fontSize: 15.0,
+                        ),),
+                        Text(widget.data[index]['mobile'],style: TextStyle(
+                          color: Color(0xFF006A75),
+                          fontSize: 15.0
+                        ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Text('Branch: ',style: TextStyle(
+                          fontSize: 15.0,
+                        ),),
+                        Text(widget.data[index]['branch'],style: TextStyle(
+                          color: Color(0xFF006A75),
+                          fontSize: 15.0
+                        ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text('DOB: ',style: TextStyle(
+                          fontSize: 15.0,
+                        ),
+                        ),
+                        Text(widget.data[index]['dateOfBirth'],style: TextStyle(
+                            color: Color(0xFF006A75),
+                            fontSize: 15.0
+                        ),
+                        ),
+
+                      ],
+
+                    )
+                  ],
                 ),
               ),
               separatorBuilder: (context, index)=>
